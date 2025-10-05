@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+server/node_modules/
+
+# Environment files
+.env
+server/.env
+
+# Logs
+*.log
+
+# Build output
+dist/
+
+# OS / Editor files
+.DS_Store
+.vscode/
+
+# Uploads (ignore files but keep structure)
+server/uploads/
+!server/uploads/avatars/
+!server/uploads/avatars/.gitkeep
+!server/uploads/notes/
+!server/uploads/notes/.gitkeep
+!server/uploads/materials/
+!server/uploads/materials/.gitkeep
