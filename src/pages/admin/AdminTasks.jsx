@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ListTodo, CheckCircle2, Clock, Calendar, Search, RefreshCw, Trash2, User, FileText, ExternalLink, Download, Info, TrendingUp, ArrowUpDown } from 'lucide-react';
-import api from '../../utils/api';
+import api, { BASE_URL } from '../../utils/api';
 import { PageLoader } from '../../components/ui/PageLoader';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { toast } from 'react-hot-toast';
@@ -65,7 +65,7 @@ export const AdminTasks = () => {
     const handleDownload = async (fileUrl, originalName) => {
         try {
             const loadingToast = toast.loading('Downloading file...');
-            const response = await fetch(`http://localhost:5001${fileUrl}`);
+            const response = await fetch(`${BASE_URL}${fileUrl}`);
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -426,7 +426,7 @@ export const AdminTasks = () => {
                                     <td className="px-6 py-5 text-center border-r border-gray-800/20 dark:border-white/40">
                                         {t.pdfUrl ? (
                                             <a
-                                                href={`http://localhost:5001${t.pdfUrl}`}
+                                                href={`${BASE_URL}${t.pdfUrl}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="inline-flex items-center gap-2 px-3 py-2 bg-[#47C4B7]/10 text-[#47C4B7] hover:bg-[#47C4B7] hover:text-white transition-all rounded-xl border border-[#47C4B7]/20 group/btn"

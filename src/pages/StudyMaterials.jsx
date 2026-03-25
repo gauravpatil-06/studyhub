@@ -6,7 +6,7 @@ import {
     ExternalLink, ChevronRight, LayoutGrid, List, FileType, Clock, BookOpen, RefreshCw
 } from 'lucide-react';
 import { useMaterials } from '../context/MaterialContext';
-import api from '../utils/api';
+import api, { BASE_URL } from '../utils/api';
 import toast from 'react-hot-toast';
 import { PageLoader } from '../components/ui/PageLoader';
 import { PageHeader } from '../components/ui/PageHeader';
@@ -189,7 +189,7 @@ export const StudyMaterials = () => {
     const handleDownload = async (fileUrl, originalName) => {
         try {
             const loadingToast = toast.loading('Downloading...');
-            const response = await fetch(`http://localhost:5001${fileUrl}`);
+            const response = await fetch(`${BASE_URL}${fileUrl}`);
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -417,7 +417,7 @@ export const StudyMaterials = () => {
                                             onClick={() => setPreviewFile(m)}
                                         >
                                             {m.fileType === 'image' ? (
-                                                <img src={`http://localhost:5001${m.fileUrl}`} alt={m.title} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                                                <img src={`${BASE_URL}${m.fileUrl}`} alt={m.title} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
                                             ) : (
                                                 <FileIcon type={m.fileType} className={`${viewMode === 'grid' ? 'w-10 h-10 sm:w-14 sm:h-14' : 'w-10 h-10'} opacity-40 group-hover:opacity-100 transition-opacity`} />
                                             )}
@@ -457,7 +457,7 @@ export const StudyMaterials = () => {
                                             <div className="flex items-center justify-end gap-1.5 sm:gap-2.5 pt-3 sm:pt-4 mt-auto border-t border-gray-100 dark:border-gray-800/60">
                                                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-red-600 dark:text-red-400 text-[10px] sm:text-[11px] font-bold shrink-0">
                                                     <a
-                                                        href={`http://localhost:5001${m.fileUrl}`} target="_blank" rel="noreferrer"
+                                                        href={`${BASE_URL}${m.fileUrl}`} target="_blank" rel="noreferrer"
                                                         onClick={(e) => e.stopPropagation()}
                                                         className="flex items-center gap-1 hover:text-red-800 dark:hover:text-red-300 transition-colors"
                                                         title="Open File"
@@ -606,9 +606,9 @@ export const StudyMaterials = () => {
                         </div>
                         <div className="w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center overflow-hidden rounded-[3rem] bg-black/20 border border-white/5 shadow-2xl">
                             {previewFile.fileType === 'image' ? (
-                                <img src={`http://localhost:5001${previewFile.fileUrl}`} alt={previewFile.title} className="max-w-full max-h-full object-contain" />
+                                <img src={`${BASE_URL}${previewFile.fileUrl}`} alt={previewFile.title} className="max-w-full max-h-full object-contain" />
                             ) : previewFile.fileType === 'pdf' ? (
-                                <iframe src={`http://localhost:5001${previewFile.fileUrl}`} className="w-full h-full border-none" />
+                                <iframe src={`${BASE_URL}${previewFile.fileUrl}`} className="w-full h-full border-none" />
                             ) : (
                                 <div className="text-center space-y-8 p-10">
                                     <FileIcon type="doc" className="w-32 h-32 mx-auto" />

@@ -9,7 +9,7 @@ import {
 import { useTasks } from '../context/TaskContext';
 import { useAuth } from '../context/AuthContext';
 import { useMaterials } from '../context/MaterialContext';
-import api from '../utils/api';
+import api, { BASE_URL } from '../utils/api';
 import toast from 'react-hot-toast';
 import { PageLoader } from '../components/ui/PageLoader';
 import { PageHeader } from '../components/ui/PageHeader';
@@ -607,7 +607,7 @@ export const Dashboard = () => {
     const handleDownloadFile = async (fileUrl) => {
         try {
             const loadingToast = toast.loading('Downloading file...');
-            const url = `http://localhost:5001${fileUrl}`; // Point directly to the backend
+            const url = `${BASE_URL}${fileUrl}`; // Point directly to the backend
             const response = await fetch(url);
 
             if (!response.ok) throw new Error('File not found on server');
@@ -1249,7 +1249,7 @@ export const Dashboard = () => {
                                                         {task.pdfUrl && (
                                                             <div className="flex items-center gap-3 text-red-600 dark:text-red-400 text-[13px] font-bold">
                                                                 <a
-                                                                    href={`http://localhost:5001${task.pdfUrl}`}
+                                                                    href={`${BASE_URL}${task.pdfUrl}`}
                                                                     target="_blank" rel="noreferrer"
                                                                     className="flex items-center gap-1 hover:text-red-800 dark:hover:text-red-300 transition-colors"
                                                                     title="Open File"

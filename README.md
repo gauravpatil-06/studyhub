@@ -165,7 +165,7 @@ http://localhost:5173
 ### Frontend (.env)
 
 ```env
-VITE_API_URL=http://localhost:5001
+VITE_API_URL=https://studyhub-backend-1ogz.onrender.com
 ```
 
 ### Backend (.env)
