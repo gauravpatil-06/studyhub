@@ -192,37 +192,38 @@ export const Dashboard = () => {
 
     // ── Mobile/Foldable Back Button Intercept ──
     useEffect(() => {
-        // Targeted check: Any Mobile device OR any screen with width <= 1024px (Foldable/Tablet)
-        const isMobileOrFoldable = () => {
-            const ua = navigator.userAgent;
-            const isSmartDisplay = /CrKey|NestHub|GoogleTV/i.test(ua);
-            if (isSmartDisplay) return false;
+        const isMobile = window.innerWidth <= 1024;
+        if (!isMobile) return;
 
-            const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-            const isSmallOrFoldable = window.innerWidth <= 1024;
-
-            return isMobileUA || isSmallOrFoldable;
-        };
-
-        if (!isMobileOrFoldable()) return;
+        // Strong history trapping: Push state twice on mount
+        window.history.pushState(null, "", window.location.href);
+        window.history.pushState(null, "", window.location.href);
 
         const handlePopState = (e) => {
-            if (window.location.pathname === '/dashboard') {
-                e.preventDefault();
-                setIsExitModalOpen(true);
-                window.history.pushState(null, null, window.location.pathname);
-            }
+            // Prevent directly exiting the site
+            e.preventDefault();
+
+            // Open the existing ExitConfirmModal
+            setIsExitModalOpen(true);
+
+            // Immediately push state again to block exit until confirmed
+            window.history.pushState(null, "", window.location.href);
         };
 
-        window.history.pushState(null, null, window.location.pathname);
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
+        window.addEventListener("popstate", handlePopState);
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
     }, []);
 
     const handleConfirmExit = () => {
         setIsExitModalOpen(false);
-        // Go back twice: once to clear our trap, once to actually exit the site/page
-        window.history.go(-2);
+        // Exit the website (go back)
+        window.history.back();
+    };
+
+    const handleCancelExit = () => {
+        setIsExitModalOpen(false);
     };
 
     // ── Goals States ──
