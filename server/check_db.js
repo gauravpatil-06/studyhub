@@ -1,44 +1,23 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
+dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+console.log('Testing connection to:', process.env.MONGO_URI);
 
-dotenv.config({ path: path.join(__dirname, '.env') });
-
-import User from './models/User.js';
-import Task from './models/Task.js';
-import Material from './models/Material.js';
-import Note from './models/Note.js';
-
-async function checkData() {
+async function check() {
     try {
         await mongoose.connect(process.env.MONGO_URI);
-        console.log('Connected to MongoDB');
-
-        const usersCount = await User.countDocuments();
-        const tasksCount = await Task.countDocuments();
-        const materialsCount = await Material.countDocuments();
-        const notesCount = await Note.countDocuments();
-
-        console.log('--- Data Statistics ---');
-        console.log('Users:', usersCount);
-        console.log('Tasks:', tasksCount);
-        console.log('Materials:', materialsCount);
-        console.log('Notes:', notesCount);
-
-        if (usersCount > 0) {
-            const users = await User.find({}, 'name email role');
-            console.log('\nUsers List:');
-            console.table(users.map(u => ({ name: u.name, email: u.email, role: u.role })));
-        }
-
+        console.log('✅ Success! Mongoose connected to MongoDB.');
+        
+        const dbs = await mongoose.connection.db.admin().listDatabases();
+        console.log('Available Databases:', dbs.databases.map(d => d.name));
+        
         await mongoose.disconnect();
-    } catch (error) {
-        console.error('Error:', error);
+        process.exit(0);
+    } catch (err) {
+        console.error('❌ Connection Failed:', err.message);
+        process.exit(1);
     }
 }
 
-checkData();
+check();
