@@ -13,7 +13,6 @@ import { useActivities } from '../context/ActivityContext';
 import api, { BASE_URL } from '../utils/api';
 import toast from 'react-hot-toast';
 import { PageLoader } from '../components/ui/PageLoader';
-import { ExitConfirmModal } from '../components/ui/ExitConfirmModal';
 import { WelcomeModal } from '../components/ui/WelcomeModal';
 
 
@@ -188,48 +187,9 @@ export const Dashboard = () => {
     };
 
 
-    const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
-    // ── Mobile/Foldable Back Button Intercept ──
-    useEffect(() => {
-        const isMobile = window.innerWidth <= 1024;
-        if (!isMobile) return;
 
-        // Ensure history states are pushed after the page is fully initialized
-        const initTrap = () => {
-            window.history.pushState({ trap: true }, "", window.location.href);
-            window.history.pushState({ trap: true }, "", window.location.href);
-        };
 
-        const timer = setTimeout(initTrap, 500);
-
-        const handlePopState = (e) => {
-            // If we are at the dashboard, block the exit
-            if (window.location.pathname.includes('/dashboard')) {
-                // Show the modal
-                setIsExitModalOpen(true);
-                
-                // Push another state to keep the user trapped until Yes/No is clicked
-                window.history.pushState({ trap: true }, "", window.location.href);
-            }
-        };
-
-        window.addEventListener("popstate", handlePopState);
-        return () => {
-            clearTimeout(timer);
-            window.removeEventListener("popstate", handlePopState);
-        };
-    }, []);
-
-    const handleConfirmExit = () => {
-        setIsExitModalOpen(false);
-        // To exit the site completely, we need to go back past our pushed states
-        window.history.go(-4); 
-    };
-
-    const handleCancelExit = () => {
-        setIsExitModalOpen(false);
-    };
 
     // ── Goals States ──
 
@@ -1661,11 +1621,6 @@ export const Dashboard = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <ExitConfirmModal
-                isOpen={isExitModalOpen}
-                onConfirm={handleConfirmExit}
-                onCancel={() => setIsExitModalOpen(false)}
-            />
             <WelcomeModal
                 isOpen={isWelcomeModalOpen}
                 userName={user?.name?.split(' ')[0] || 'Scholar'}
