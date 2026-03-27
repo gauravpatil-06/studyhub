@@ -195,31 +195,36 @@ export const Dashboard = () => {
         const isMobile = window.innerWidth <= 1024;
         if (!isMobile) return;
 
-        // Strong history trapping: Push state twice on mount
-        window.history.pushState(null, "", window.location.href);
-        window.history.pushState(null, "", window.location.href);
+        // Ensure history states are pushed after the page is fully initialized
+        const initTrap = () => {
+            window.history.pushState({ trap: true }, "", window.location.href);
+            window.history.pushState({ trap: true }, "", window.location.href);
+        };
+
+        const timer = setTimeout(initTrap, 500);
 
         const handlePopState = (e) => {
-            // Prevent directly exiting the site
-            e.preventDefault();
-
-            // Open the existing ExitConfirmModal
-            setIsExitModalOpen(true);
-
-            // Immediately push state again to block exit until confirmed
-            window.history.pushState(null, "", window.location.href);
+            // If we are at the dashboard, block the exit
+            if (window.location.pathname.includes('/dashboard')) {
+                // Show the modal
+                setIsExitModalOpen(true);
+                
+                // Push another state to keep the user trapped until Yes/No is clicked
+                window.history.pushState({ trap: true }, "", window.location.href);
+            }
         };
 
         window.addEventListener("popstate", handlePopState);
         return () => {
+            clearTimeout(timer);
             window.removeEventListener("popstate", handlePopState);
         };
     }, []);
 
     const handleConfirmExit = () => {
         setIsExitModalOpen(false);
-        // Exit the website (go back)
-        window.history.back();
+        // To exit the site completely, we need to go back past our pushed states
+        window.history.go(-4); 
     };
 
     const handleCancelExit = () => {
