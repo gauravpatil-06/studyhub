@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/Status-Production%20Ready-success"/>
 </p>
 
----
 
 ## 📘 About the Project
 
