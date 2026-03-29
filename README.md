@@ -1,17 +1,4 @@
-<h1 align="center">🚀 StudyHub – Smart Learning Productivity Platform</h1>
 
-<p align="center">
-  🎓 StudyHub | 📊 Productivity | 🧠 Learning Analytics
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Frontend-React%20%7C%20Vite-blue"/>
-  <img src="https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-green"/>
-  <img src="https://img.shields.io/badge/Database-MongoDB%20Atlas-orange"/>
-  <img src="https://img.shields.io/badge/Status-Production%20Ready-success"/>
-</p>
-
----
 
 ## 📘 About the Project
 
