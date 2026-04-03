@@ -6,7 +6,7 @@ server/node_modules/
 .env
 server/.env
 
-# Uploads (ignore all files)
+# Ignore user-uploaded files, but preserve placeholder directory structure
 server/uploads/*
 !server/uploads/avatars/.gitkeep
 !server/uploads/notes/.gitkeep
